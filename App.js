@@ -64,7 +64,7 @@ const App = () => {
   };
 
   const addDot = () => {
-    if (Math.round(display) === Number(display)) {
+    if (Math.round(display) === Number(display) && !display.includes('.')) {
       setDisplay(`${display}.`);
       setShouldConcatenateDigit(true);
     }
@@ -81,34 +81,42 @@ const App = () => {
   return (
     <View style={styles.container}>
       <Display display={display} />
-      <Button label="1" operation={() => concatenateDigit('1')} />
-      <Button label="2" operation={() => concatenateDigit('2')} />
-      <Button label="3" operation={() => concatenateDigit('3')} />
-      <Button label="4" operation={() => concatenateDigit('4')} />
-      <Button label="5" operation={() => concatenateDigit('5')} />
-      <Button label="6" operation={() => concatenateDigit('6')} />
-      <Button label="7" operation={() => concatenateDigit('7')} />
-      <Button label="8" operation={() => concatenateDigit('8')} />
-      <Button label="9" operation={() => concatenateDigit('9')} />
-      <Button label="0" operation={() => concatenateDigit('0')} />
-      <Button label="+" operation={() => activateOperation('addition')} />
-      <Button
-        label="-"
-        operation={() => activateOperation('subtraction')}
-      />
-      <Button
-        label="*"
-        operation={() => activateOperation('multiplication')}
-      />
-      <Button label="/" operation={() => activateOperation('division')} />
-      <Button label="=" operation={() => generateResult()} />
-      <Button label="." operation={() => addDot()} />
-      <Button label="%" operation={() => percentage()} />
-      <Button label="+/-" operation={() => invertSignal()} />
-      <Button
-        label={display ? 'C' : 'AC'}
-        operation={() => cancelButton()}
-      />
+      <View style={styles.row}>
+        <Button label={display ? 'C' : 'AC'} operation={() => cancelButton()} />
+        <Button label="+/-" operation={() => invertSignal()} />
+        <Button label="%" operation={() => percentage()} />
+        <Button label="÷" operation={() => activateOperation('division')} />
+      </View>
+      <View style={styles.row}>
+        <Button label="7" operation={() => concatenateDigit('7')} />
+        <Button label="8" operation={() => concatenateDigit('8')} />
+        <Button label="9" operation={() => concatenateDigit('9')} />
+        <Button
+          label="×"
+          operation={() => activateOperation('multiplication')}
+        />
+      </View>
+      <View style={styles.row}>
+        <Button label="4" operation={() => concatenateDigit('4')} />
+        <Button label="5" operation={() => concatenateDigit('5')} />
+        <Button label="6" operation={() => concatenateDigit('6')} />
+        <Button label="-" operation={() => activateOperation('subtraction')} />
+      </View>
+      <View style={styles.row}>
+        <Button label="1" operation={() => concatenateDigit('1')} />
+        <Button label="2" operation={() => concatenateDigit('2')} />
+        <Button label="3" operation={() => concatenateDigit('3')} />
+        <Button label="+" operation={() => activateOperation('addition')} />
+      </View>
+      <View style={styles.row}>
+        <Button
+          label="0"
+          doubleSize={true}
+          operation={() => concatenateDigit('0')}
+        />
+        <Button label="." operation={() => addDot()} />
+        <Button label="=" operation={() => generateResult()} />
+      </View>
     </View>
   );
 };
@@ -119,6 +127,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 5,
+    marginBottom: 7
   }
 });
 
