@@ -33,11 +33,17 @@ const App = () => {
     }
   };
 
-  const activateOperation = operation => {
-    firstOperand = Number(display);
+  const activateOperation = chosenOperation => {
+    if (operation !== '') {
+      generateResult();
+      firstOperand = result;
+    } else {
+      firstOperand = Number(display);
+    }
+
     setShouldConcatenateDigit(false);
-    setOperation(operation);
-    switch (operation) {
+    setOperation(chosenOperation);
+    switch (chosenOperation) {
       case 'division':
         setHighlightDivisionButton(true);
         break;
@@ -93,6 +99,10 @@ const App = () => {
     }
     setDisplay(0);
     setShouldConcatenateDigit(false);
+    setHighlightDivisionButton(false);
+    setHighlightMultiplicationButton(false);
+    setHighlightSubtractionButton(false);
+    setHighlightAdditionButton(false);
   };
 
   const addDot = () => {

@@ -29,7 +29,6 @@ const Button = ({ label, operation, doubleSize, highlightButton }) => {
 
 const styles = StyleSheet.create({
   button: {
-    // flex: 1,
     height: '90%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -44,10 +43,8 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width / 2 - 2.5
   },
   number: {
-    // height: '100%',
     fontSize: 35,
     color: '#FFFFFF'
-    // textAlign: 'center'
   }
 });
 
