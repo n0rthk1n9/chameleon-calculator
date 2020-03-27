@@ -10,15 +10,11 @@ import {
 const Button = ({ label, operation, doubleSize }) => {
   return (
     <View
-      style={
-        doubleSize
-          ? [styles.view, styles.doubleSizeView]
-          : [styles.view, styles.singleSizeView]
-      }
+      style={doubleSize ? [styles.doubleSizeView] : [styles.singleSizeView]}
     >
       <TouchableHighlight
         style={styles.button}
-        underlayColor={'red'}
+        underlayColor={'#c8518b'}
         onPress={operation}
       >
         <Text style={styles.number}>{label}</Text>
@@ -28,18 +24,26 @@ const Button = ({ label, operation, doubleSize }) => {
 };
 
 const styles = StyleSheet.create({
-  view: {
-    padding: 10
+  button: {
+    // flex: 1,
+    height: '90%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#de5b9c',
+    borderRadius: 4,
+    margin: 5
   },
   singleSizeView: {
-    width: Dimensions.get('window').width / 4
+    width: Dimensions.get('window').width / 4 - 2.5
   },
   doubleSizeView: {
-    width: Dimensions.get('window').width / 2
+    width: Dimensions.get('window').width / 2 - 2.5
   },
   number: {
+    // height: '100%',
     fontSize: 35,
-    textAlign: 'center'
+    color: '#FFFFFF'
+    // textAlign: 'center'
   }
 });
 

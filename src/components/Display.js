@@ -4,7 +4,11 @@ import { Text, View, StyleSheet } from 'react-native';
 const Display = ({ display }) => {
   return (
     <View>
-      <Text style={styles.display}>{display}</Text>
+      <Text style={styles.display}>
+        {Number(display) >= 1000000000
+          ? Number(display).toExponential()
+          : Number(display).toLocaleString()}
+      </Text>
     </View>
   );
 };
@@ -12,7 +16,7 @@ const Display = ({ display }) => {
 const styles = StyleSheet.create({
   display: {
     fontSize: 40,
-    color: 'red'
+    color: '#FFFFFF'
   }
 });
 

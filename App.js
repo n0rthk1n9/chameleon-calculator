@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import Display from './src/components/Display';
 import Button from './src/components/Button';
 
@@ -14,7 +15,9 @@ const App = () => {
 
   const concatenateDigit = digit => {
     if (shouldConcatenateDigit) {
-      setDisplay(display + digit);
+      if (Number(display) <= 100000000) {
+        setDisplay(display + digit);
+      }
     } else {
       setDisplay(digit);
       setShouldConcatenateDigit(true);
@@ -79,60 +82,75 @@ const App = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Display display={display} />
-      <View style={styles.row}>
-        <Button label={display ? 'C' : 'AC'} operation={() => cancelButton()} />
-        <Button label="+/-" operation={() => invertSignal()} />
-        <Button label="%" operation={() => percentage()} />
-        <Button label="÷" operation={() => activateOperation('division')} />
+    <LinearGradient style={styles.container} colors={['#FF69B4', '#de5b9c']}>
+      <View style={styles.display}>
+        <Display display={display} />
       </View>
-      <View style={styles.row}>
-        <Button label="7" operation={() => concatenateDigit('7')} />
-        <Button label="8" operation={() => concatenateDigit('8')} />
-        <Button label="9" operation={() => concatenateDigit('9')} />
-        <Button
-          label="×"
-          operation={() => activateOperation('multiplication')}
-        />
+      <View style={styles.numPad}>
+        <View style={styles.numPadRow}>
+          <Button
+            label={display ? 'C' : 'AC'}
+            operation={() => cancelButton()}
+          />
+          <Button label="+/-" operation={() => invertSignal()} />
+          <Button label="%" operation={() => percentage()} />
+          <Button label="÷" operation={() => activateOperation('division')} />
+        </View>
+        <View style={styles.numPadRow}>
+          <Button label="7" operation={() => concatenateDigit('7')} />
+          <Button label="8" operation={() => concatenateDigit('8')} />
+          <Button label="9" operation={() => concatenateDigit('9')} />
+          <Button
+            label="×"
+            operation={() => activateOperation('multiplication')}
+          />
+        </View>
+        <View style={styles.numPadRow}>
+          <Button label="4" operation={() => concatenateDigit('4')} />
+          <Button label="5" operation={() => concatenateDigit('5')} />
+          <Button label="6" operation={() => concatenateDigit('6')} />
+          <Button
+            label="-"
+            operation={() => activateOperation('subtraction')}
+          />
+        </View>
+        <View style={styles.numPadRow}>
+          <Button label="1" operation={() => concatenateDigit('1')} />
+          <Button label="2" operation={() => concatenateDigit('2')} />
+          <Button label="3" operation={() => concatenateDigit('3')} />
+          <Button label="+" operation={() => activateOperation('addition')} />
+        </View>
+        <View style={styles.numPadRow}>
+          <Button
+            label="0"
+            doubleSize={true}
+            operation={() => concatenateDigit('0')}
+          />
+          <Button label="." operation={() => addDot()} />
+          <Button label="=" operation={() => generateResult()} />
+        </View>
       </View>
-      <View style={styles.row}>
-        <Button label="4" operation={() => concatenateDigit('4')} />
-        <Button label="5" operation={() => concatenateDigit('5')} />
-        <Button label="6" operation={() => concatenateDigit('6')} />
-        <Button label="-" operation={() => activateOperation('subtraction')} />
-      </View>
-      <View style={styles.row}>
-        <Button label="1" operation={() => concatenateDigit('1')} />
-        <Button label="2" operation={() => concatenateDigit('2')} />
-        <Button label="3" operation={() => concatenateDigit('3')} />
-        <Button label="+" operation={() => activateOperation('addition')} />
-      </View>
-      <View style={styles.row}>
-        <Button
-          label="0"
-          doubleSize={true}
-          operation={() => concatenateDigit('0')}
-        />
-        <Button label="." operation={() => addDot()} />
-        <Button label="=" operation={() => generateResult()} />
-      </View>
-    </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
+    paddingTop: 100
   },
-  row: {
+  display: {
+    flexDirection: 'row',
+    height: Dimensions.get('window').height / 3
+  },
+  numPad: {
+    height: Dimensions.get('window').height / 2
+  },
+  numPadRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 5,
-    marginBottom: 7
+    height: Dimensions.get('window').height / 2 / 5
   }
 });
 
