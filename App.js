@@ -12,6 +12,15 @@ const App = () => {
   const [display, setDisplay] = useState(0);
   const [operation, setOperation] = useState('');
   const [shouldConcatenateDigit, setShouldConcatenateDigit] = useState(false);
+  const [highlightAdditionButton, setHighlightAdditionButton] = useState(false);
+  const [highlightSubtractionButton, setHighlightSubtractionButton] = useState(
+    false
+  );
+  const [highlightDivisionButton, setHighlightDivisionButton] = useState(false);
+  const [
+    highlightMultiplicationButton,
+    setHighlightMultiplicationButton
+  ] = useState(false);
 
   const concatenateDigit = digit => {
     if (shouldConcatenateDigit) {
@@ -28,6 +37,22 @@ const App = () => {
     firstOperand = Number(display);
     setShouldConcatenateDigit(false);
     setOperation(operation);
+    switch (operation) {
+      case 'division':
+        setHighlightDivisionButton(true);
+        break;
+      case 'multiplication':
+        setHighlightMultiplicationButton(true);
+        break;
+      case 'subtraction':
+        setHighlightSubtractionButton(true);
+        break;
+      case 'addition':
+        setHighlightAdditionButton(true);
+        break;
+      default:
+        break;
+    }
   };
 
   const generateResult = () => {
@@ -56,6 +81,10 @@ const App = () => {
     setDisplay(+result.toFixed(5));
     setOperation('');
     setShouldConcatenateDigit(false);
+    setHighlightDivisionButton(false);
+    setHighlightMultiplicationButton(false);
+    setHighlightSubtractionButton(false);
+    setHighlightAdditionButton(false);
   };
 
   const cancelButton = () => {
@@ -94,7 +123,11 @@ const App = () => {
           />
           <Button label="+/-" operation={() => invertSignal()} />
           <Button label="%" operation={() => percentage()} />
-          <Button label="÷" operation={() => activateOperation('division')} />
+          <Button
+            label="÷"
+            operation={() => activateOperation('division')}
+            highlightButton={highlightDivisionButton}
+          />
         </View>
         <View style={styles.numPadRow}>
           <Button label="7" operation={() => concatenateDigit('7')} />
@@ -103,6 +136,7 @@ const App = () => {
           <Button
             label="×"
             operation={() => activateOperation('multiplication')}
+            highlightButton={highlightMultiplicationButton}
           />
         </View>
         <View style={styles.numPadRow}>
@@ -112,13 +146,18 @@ const App = () => {
           <Button
             label="-"
             operation={() => activateOperation('subtraction')}
+            highlightButton={highlightSubtractionButton}
           />
         </View>
         <View style={styles.numPadRow}>
           <Button label="1" operation={() => concatenateDigit('1')} />
           <Button label="2" operation={() => concatenateDigit('2')} />
           <Button label="3" operation={() => concatenateDigit('3')} />
-          <Button label="+" operation={() => activateOperation('addition')} />
+          <Button
+            label="+"
+            operation={() => activateOperation('addition')}
+            highlightButton={highlightAdditionButton}
+          />
         </View>
         <View style={styles.numPadRow}>
           <Button

@@ -7,13 +7,17 @@ import {
   Dimensions
 } from 'react-native';
 
-const Button = ({ label, operation, doubleSize }) => {
+const Button = ({ label, operation, doubleSize, highlightButton }) => {
   return (
     <View
       style={doubleSize ? [styles.doubleSizeView] : [styles.singleSizeView]}
     >
       <TouchableHighlight
-        style={styles.button}
+        style={
+          highlightButton
+            ? [styles.button, { backgroundColor: '#c8518b' }]
+            : [styles.button]
+        }
         underlayColor={'#c8518b'}
         onPress={operation}
       >
