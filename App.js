@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Display from './src/components/Display';
 import Button from './src/components/Button';
+
+import Constants from 'expo-constants';
 
 let firstOperand;
 let secondOperand;
@@ -10,6 +12,7 @@ let result;
 
 const App = () => {
   const [display, setDisplay] = useState(0);
+  const [calculationHistory, setCalculationHistory] = useState([]);
   const [operation, setOperation] = useState('');
   const [shouldConcatenateDigit, setShouldConcatenateDigit] = useState(false);
   const [highlightAdditionButton, setHighlightAdditionButton] = useState(false);
@@ -38,6 +41,7 @@ const App = () => {
       generateResult();
       firstOperand = result;
     } else {
+      setCalculationHistory([]);
       firstOperand = Number(display);
     }
 
@@ -45,15 +49,47 @@ const App = () => {
     setOperation(chosenOperation);
     switch (chosenOperation) {
       case 'division':
+        setCalculationHistory([
+          ...calculationHistory,
+          {
+            key: `${calculationHistory.length === 0 ? '' : '÷'}${Number(
+              display
+            )}`
+          }
+        ]);
         setHighlightDivisionButton(true);
         break;
       case 'multiplication':
+        setCalculationHistory([
+          ...calculationHistory,
+          {
+            key: `${calculationHistory.length === 0 ? '' : '×'}${Number(
+              display
+            )}`
+          }
+        ]);
         setHighlightMultiplicationButton(true);
         break;
       case 'subtraction':
+        setCalculationHistory([
+          ...calculationHistory,
+          {
+            key: `${calculationHistory.length === 0 ? '' : '-'}${Number(
+              display
+            )}`
+          }
+        ]);
         setHighlightSubtractionButton(true);
         break;
       case 'addition':
+        setCalculationHistory([
+          ...calculationHistory,
+          {
+            key: `${calculationHistory.length === 0 ? '' : '+'}${Number(
+              display
+            )}`
+          }
+        ]);
         setHighlightAdditionButton(true);
         break;
       default:
@@ -66,18 +102,31 @@ const App = () => {
 
     switch (operation) {
       case 'division':
+        setCalculationHistory([
+          ...calculationHistory,
+          { key: `÷${secondOperand}` }
+        ]);
         result = firstOperand / secondOperand;
         break;
       case 'multiplication':
-        secondOperand = Number(display);
+        setCalculationHistory([
+          ...calculationHistory,
+          { key: `×${secondOperand}` }
+        ]);
         result = firstOperand * secondOperand;
         break;
       case 'subtraction':
-        secondOperand = Number(display);
+        setCalculationHistory([
+          ...calculationHistory,
+          { key: `-${secondOperand}` }
+        ]);
         result = firstOperand - secondOperand;
         break;
       case 'addition':
-        secondOperand = Number(display);
+        setCalculationHistory([
+          ...calculationHistory,
+          { key: `+${secondOperand}` }
+        ]);
         result = firstOperand + secondOperand;
         break;
       default:
@@ -98,6 +147,7 @@ const App = () => {
       setOperation('');
     }
     setDisplay(0);
+    setCalculationHistory([]);
     setShouldConcatenateDigit(false);
     setHighlightDivisionButton(false);
     setHighlightMultiplicationButton(false);
@@ -122,6 +172,11 @@ const App = () => {
 
   return (
     <LinearGradient style={styles.container} colors={['#FF69B4', '#de5b9c']}>
+      <FlatList
+        style={styles.calculationHistory}
+        data={calculationHistory}
+        renderItem={({ historyElement }) => <Text>{historyElement.key}</Text>}
+      />
       <View style={styles.display}>
         <Display display={display} />
       </View>
@@ -187,14 +242,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 100
+    paddingTop: Constants.statusBarHeight
+  },
+  calculationHistory: {
+    flex: 1,
+    height: Dimensions.get('window').height / 4
   },
   display: {
     flexDirection: 'row',
-    height: Dimensions.get('window').height / 3
+    height: Dimensions.get('window').height / 4
   },
   numPad: {
-    height: Dimensions.get('window').height / 2
+    height: Dimensions.get('window').height / 2,
+    paddingBottom: 50
   },
   numPadRow: {
     flexDirection: 'row',
