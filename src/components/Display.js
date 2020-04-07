@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Dimensions } from 'react-native';
+
+const WINDOW_WITH = Dimensions.get('window').width;
 
 const Display = ({ display }) => {
   return (
@@ -15,9 +17,10 @@ const Display = ({ display }) => {
 
 const styles = StyleSheet.create({
   display: {
-    fontSize: 40,
-    color: '#FFFFFF'
-  }
+    fontSize: WINDOW_WITH > 320 ? 40 : 25,
+    color: '#FFFFFF',
+    paddingHorizontal: 10,
+  },
 });
 
 export default Display;

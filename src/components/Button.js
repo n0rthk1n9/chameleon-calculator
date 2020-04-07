@@ -4,8 +4,10 @@ import {
   View,
   Text,
   TouchableHighlight,
-  Dimensions
+  Dimensions,
 } from 'react-native';
+
+const WINDOW_WITH = Dimensions.get('window').width;
 
 const Button = ({ label, operation, doubleSize, highlightButton }) => {
   return (
@@ -34,18 +36,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#de5b9c',
     borderRadius: 4,
-    margin: 5
+    margin: 5,
   },
   singleSizeView: {
-    width: Dimensions.get('window').width / 4 - 2.5
+    width: WINDOW_WITH / 4 - 2.5,
   },
   doubleSizeView: {
-    width: Dimensions.get('window').width / 2 - 2.5
+    width: WINDOW_WITH / 2 - 2.5,
   },
   number: {
-    fontSize: 35,
-    color: '#FFFFFF'
-  }
+    fontSize: WINDOW_WITH > 320 ? 35 : 25,
+    color: '#FFFFFF',
+  },
 });
 
 export default Button;

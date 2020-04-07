@@ -8,6 +8,8 @@ let firstOperand;
 let secondOperand;
 let result;
 
+const WINDOW_HEIGHT = Dimensions.get('window').height;
+
 const App = () => {
   const [display, setDisplay] = useState(0);
   const [operation, setOperation] = useState('');
@@ -199,19 +201,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 100,
+    paddingTop: WINDOW_HEIGHT / 10,
   },
   display: {
     flexDirection: 'row',
-    height: Dimensions.get('window').height / 3,
+    height: WINDOW_HEIGHT / 3,
   },
   numPad: {
-    height: Dimensions.get('window').height / 2,
+    height: WINDOW_HEIGHT / 2,
   },
   numPadRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    height: Dimensions.get('window').height / 2 / 5,
+    height: WINDOW_HEIGHT / 2 / 5,
   },
 });
 
