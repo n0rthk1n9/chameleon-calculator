@@ -11,6 +11,7 @@ let result;
 const App = () => {
   const [display, setDisplay] = useState(0);
   const [operation, setOperation] = useState('');
+  const [changeOperation, setChangeOperation] = useState(true);
   const [shouldConcatenateDigit, setShouldConcatenateDigit] = useState(false);
   const [highlightAdditionButton, setHighlightAdditionButton] = useState(false);
   const [highlightSubtractionButton, setHighlightSubtractionButton] = useState(
@@ -19,10 +20,11 @@ const App = () => {
   const [highlightDivisionButton, setHighlightDivisionButton] = useState(false);
   const [
     highlightMultiplicationButton,
-    setHighlightMultiplicationButton
+    setHighlightMultiplicationButton,
   ] = useState(false);
 
-  const concatenateDigit = digit => {
+  const concatenateDigit = (digit) => {
+    setChangeOperation(false);
     if (shouldConcatenateDigit) {
       if (Number(display) <= 100000000) {
         setDisplay(display + digit);
@@ -33,8 +35,8 @@ const App = () => {
     }
   };
 
-  const activateOperation = chosenOperation => {
-    if (operation !== '') {
+  const activateOperation = (chosenOperation) => {
+    if (operation !== '' && !changeOperation) {
       generateResult();
       firstOperand = result;
     } else {
@@ -43,6 +45,11 @@ const App = () => {
 
     setShouldConcatenateDigit(false);
     setOperation(chosenOperation);
+    setHighlightAdditionButton(false);
+    setHighlightSubtractionButton(false);
+    setHighlightMultiplicationButton(false);
+    setHighlightDivisionButton(false);
+
     switch (chosenOperation) {
       case 'division':
         setHighlightDivisionButton(true);
@@ -59,33 +66,38 @@ const App = () => {
       default:
         break;
     }
+    setChangeOperation(true);
   };
 
   const generateResult = () => {
-    secondOperand = Number(display);
+    if (!changeOperation) {
+      secondOperand = Number(display);
 
-    switch (operation) {
-      case 'division':
-        result = firstOperand / secondOperand;
-        break;
-      case 'multiplication':
-        secondOperand = Number(display);
-        result = firstOperand * secondOperand;
-        break;
-      case 'subtraction':
-        secondOperand = Number(display);
-        result = firstOperand - secondOperand;
-        break;
-      case 'addition':
-        secondOperand = Number(display);
-        result = firstOperand + secondOperand;
-        break;
-      default:
-        return null;
+      switch (operation) {
+        case 'division':
+          result = firstOperand / secondOperand;
+          break;
+        case 'multiplication':
+          secondOperand = Number(display);
+          result = firstOperand * secondOperand;
+          break;
+        case 'subtraction':
+          secondOperand = Number(display);
+          result = firstOperand - secondOperand;
+          break;
+        case 'addition':
+          secondOperand = Number(display);
+          result = firstOperand + secondOperand;
+          break;
+        default:
+          return null;
+      }
+
+      setDisplay(+result.toFixed(5));
     }
 
-    setDisplay(+result.toFixed(5));
     setOperation('');
+    setChangeOperation(true);
     setShouldConcatenateDigit(false);
     setHighlightDivisionButton(false);
     setHighlightMultiplicationButton(false);
@@ -187,20 +199,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 100
+    paddingTop: 100,
   },
   display: {
     flexDirection: 'row',
-    height: Dimensions.get('window').height / 3
+    height: Dimensions.get('window').height / 3,
   },
   numPad: {
-    height: Dimensions.get('window').height / 2
+    height: Dimensions.get('window').height / 2,
   },
   numPadRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    height: Dimensions.get('window').height / 2 / 5
-  }
+    height: Dimensions.get('window').height / 2 / 5,
+  },
 });
 
 export default App;
