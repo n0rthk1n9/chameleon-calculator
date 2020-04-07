@@ -15,15 +15,12 @@ const App = () => {
   const [operation, setOperation] = useState('');
   const [changeOperation, setChangeOperation] = useState(true);
   const [shouldConcatenateDigit, setShouldConcatenateDigit] = useState(false);
-  const [highlightAdditionButton, setHighlightAdditionButton] = useState(false);
-  const [highlightSubtractionButton, setHighlightSubtractionButton] = useState(
-    false
-  );
-  const [highlightDivisionButton, setHighlightDivisionButton] = useState(false);
-  const [
-    highlightMultiplicationButton,
-    setHighlightMultiplicationButton,
-  ] = useState(false);
+  const [highlightedButtons, setHighlightedButtons] = useState({
+    addition: false,
+    subtraction: false,
+    multiplication: false,
+    division: false,
+  });
 
   const concatenateDigit = (digit) => {
     setChangeOperation(false);
@@ -47,27 +44,13 @@ const App = () => {
 
     setShouldConcatenateDigit(false);
     setOperation(chosenOperation);
-    setHighlightAdditionButton(false);
-    setHighlightSubtractionButton(false);
-    setHighlightMultiplicationButton(false);
-    setHighlightDivisionButton(false);
-
-    switch (chosenOperation) {
-      case 'division':
-        setHighlightDivisionButton(true);
-        break;
-      case 'multiplication':
-        setHighlightMultiplicationButton(true);
-        break;
-      case 'subtraction':
-        setHighlightSubtractionButton(true);
-        break;
-      case 'addition':
-        setHighlightAdditionButton(true);
-        break;
-      default:
-        break;
-    }
+    setHighlightedButtons({
+      addition: false,
+      subtraction: false,
+      multiplication: false,
+      division: false,
+      [chosenOperation]: true,
+    });
     setChangeOperation(true);
   };
 
@@ -101,10 +84,7 @@ const App = () => {
     setOperation('');
     setChangeOperation(true);
     setShouldConcatenateDigit(false);
-    setHighlightDivisionButton(false);
-    setHighlightMultiplicationButton(false);
-    setHighlightSubtractionButton(false);
-    setHighlightAdditionButton(false);
+    resetHighlightedButtons();
   };
 
   const cancelButton = () => {
@@ -113,10 +93,8 @@ const App = () => {
     }
     setDisplay(0);
     setShouldConcatenateDigit(false);
-    setHighlightDivisionButton(false);
-    setHighlightMultiplicationButton(false);
-    setHighlightSubtractionButton(false);
-    setHighlightAdditionButton(false);
+    resetHighlightedButtons();
+    setChangeOperation(true);
   };
 
   const addDot = () => {
@@ -124,14 +102,28 @@ const App = () => {
       setDisplay(`${display}.`);
       setShouldConcatenateDigit(true);
     }
+    resetHighlightedButtons();
+    setChangeOperation(true);
+    setOperation('');
   };
 
   const percentage = () => {
     setDisplay(Number(display) / 100);
+    resetHighlightedButtons();
   };
 
   const invertSignal = () => {
     setDisplay(Number(display) * -1);
+    resetHighlightedButtons();
+  };
+
+  const resetHighlightedButtons = () => {
+    setHighlightedButtons({
+      addition: false,
+      subtraction: false,
+      multiplication: false,
+      division: false,
+    });
   };
 
   return (
@@ -150,7 +142,7 @@ const App = () => {
           <Button
             label="÷"
             operation={() => activateOperation('division')}
-            highlightButton={highlightDivisionButton}
+            highlightButton={highlightedButtons.division}
           />
         </View>
         <View style={styles.numPadRow}>
@@ -160,7 +152,7 @@ const App = () => {
           <Button
             label="×"
             operation={() => activateOperation('multiplication')}
-            highlightButton={highlightMultiplicationButton}
+            highlightButton={highlightedButtons.multiplication}
           />
         </View>
         <View style={styles.numPadRow}>
@@ -170,7 +162,7 @@ const App = () => {
           <Button
             label="-"
             operation={() => activateOperation('subtraction')}
-            highlightButton={highlightSubtractionButton}
+            highlightButton={highlightedButtons.subtraction}
           />
         </View>
         <View style={styles.numPadRow}>
@@ -180,7 +172,7 @@ const App = () => {
           <Button
             label="+"
             operation={() => activateOperation('addition')}
-            highlightButton={highlightAdditionButton}
+            highlightButton={highlightedButtons.addition}
           />
         </View>
         <View style={styles.numPadRow}>
@@ -201,7 +193,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: WINDOW_HEIGHT / 10,
+    paddingTop: WINDOW_HEIGHT / 8,
   },
   display: {
     flexDirection: 'row',
