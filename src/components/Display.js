@@ -3,10 +3,10 @@ import { Text, View, StyleSheet, Dimensions } from 'react-native';
 
 const WINDOW_WITH = Dimensions.get('window').width;
 
-const Display = ({ display }) => {
+const Display = ({ display, theme }) => {
   return (
     <View>
-      <Text style={styles.display}>
+      <Text style={[styles.display, { color: theme.displayFontColor }]}>
         {Number(display) >= 1000000000
           ? Number(display).toExponential()
           : Number(display).toLocaleString()}

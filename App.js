@@ -1,12 +1,44 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  TouchableHighlight,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Display from './src/components/Display';
 import Button from './src/components/Button';
+import ThemeButton from './src/components/ThemeButton';
 
 let firstOperand;
 let secondOperand;
 let result;
+
+const THEMES = {
+  default: {
+    gradient: ['#FF69B4', '#de5b9c'],
+    buttonTheme: {
+      buttonBackgroundColor: '#de5b9c',
+      buttonPressColor: '#c8518b',
+      buttonFontColor: '#FFFFFF',
+    },
+    displayTheme: {
+      displayFontColor: '#FFFFFF',
+    },
+  },
+  psycho: {
+    gradient: ['#a7c4a0', '#e4fde1'],
+    buttonTheme: {
+      buttonBackgroundColor: '#fbfbf2',
+      buttonPressColor: '#31493c',
+      buttonFontColor: '#000000',
+    },
+    displayTheme: {
+      displayFontColor: '#000000',
+    },
+  },
+};
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
@@ -21,6 +53,7 @@ const App = () => {
     multiplication: false,
     division: false,
   });
+  const [selectedTheme, setSelectedTheme] = useState('psycho');
 
   const concatenateDigit = (digit) => {
     setChangeOperation(false);
@@ -126,53 +159,122 @@ const App = () => {
     });
   };
 
+  const changeTheme = (chosenTheme) => {
+    setSelectedTheme(chosenTheme);
+  };
+
   return (
-    <LinearGradient style={styles.container} colors={['#FF69B4', '#de5b9c']}>
+    <LinearGradient
+      style={styles.container}
+      colors={THEMES[selectedTheme].gradient}
+    >
       <View style={styles.display}>
-        <Display display={display} />
+        <Display display={display} theme={THEMES[selectedTheme].displayTheme} />
+      </View>
+      <View style={styles.themes}>
+        {Object.keys(THEMES).map((themeName) => {
+          return (
+            <ThemeButton
+              key={themeName}
+              themeName={themeName}
+              theme={THEMES[themeName]}
+              selectedTheme={selectedTheme}
+              onThemeChange={changeTheme}
+            />
+          );
+        })}
       </View>
       <View style={styles.numPad}>
         <View style={styles.numPadRow}>
           <Button
             label={display ? 'C' : 'AC'}
             operation={() => cancelButton()}
+            theme={THEMES[selectedTheme].buttonTheme}
           />
-          <Button label="+/-" operation={() => invertSignal()} />
-          <Button label="%" operation={() => percentage()} />
+          <Button
+            label="+/-"
+            operation={() => invertSignal()}
+            theme={THEMES[selectedTheme].buttonTheme}
+          />
+          <Button
+            label="%"
+            operation={() => percentage()}
+            theme={THEMES[selectedTheme].buttonTheme}
+          />
           <Button
             label="÷"
             operation={() => activateOperation('division')}
             highlightButton={highlightedButtons.division}
+            theme={THEMES[selectedTheme].buttonTheme}
           />
         </View>
         <View style={styles.numPadRow}>
-          <Button label="7" operation={() => concatenateDigit('7')} />
-          <Button label="8" operation={() => concatenateDigit('8')} />
-          <Button label="9" operation={() => concatenateDigit('9')} />
+          <Button
+            label="7"
+            operation={() => concatenateDigit('7')}
+            theme={THEMES[selectedTheme].buttonTheme}
+          />
+          <Button
+            label="8"
+            operation={() => concatenateDigit('8')}
+            theme={THEMES[selectedTheme].buttonTheme}
+          />
+          <Button
+            label="9"
+            operation={() => concatenateDigit('9')}
+            theme={THEMES[selectedTheme].buttonTheme}
+          />
           <Button
             label="×"
             operation={() => activateOperation('multiplication')}
             highlightButton={highlightedButtons.multiplication}
+            theme={THEMES[selectedTheme].buttonTheme}
           />
         </View>
         <View style={styles.numPadRow}>
-          <Button label="4" operation={() => concatenateDigit('4')} />
-          <Button label="5" operation={() => concatenateDigit('5')} />
-          <Button label="6" operation={() => concatenateDigit('6')} />
+          <Button
+            label="4"
+            operation={() => concatenateDigit('4')}
+            theme={THEMES[selectedTheme].buttonTheme}
+          />
+          <Button
+            label="5"
+            operation={() => concatenateDigit('5')}
+            theme={THEMES[selectedTheme].buttonTheme}
+          />
+          <Button
+            label="6"
+            operation={() => concatenateDigit('6')}
+            theme={THEMES[selectedTheme].buttonTheme}
+          />
           <Button
             label="-"
             operation={() => activateOperation('subtraction')}
             highlightButton={highlightedButtons.subtraction}
+            theme={THEMES[selectedTheme].buttonTheme}
           />
         </View>
         <View style={styles.numPadRow}>
-          <Button label="1" operation={() => concatenateDigit('1')} />
-          <Button label="2" operation={() => concatenateDigit('2')} />
-          <Button label="3" operation={() => concatenateDigit('3')} />
+          <Button
+            label="1"
+            operation={() => concatenateDigit('1')}
+            theme={THEMES[selectedTheme].buttonTheme}
+          />
+          <Button
+            label="2"
+            operation={() => concatenateDigit('2')}
+            theme={THEMES[selectedTheme].buttonTheme}
+          />
+          <Button
+            label="3"
+            operation={() => concatenateDigit('3')}
+            theme={THEMES[selectedTheme].buttonTheme}
+          />
           <Button
             label="+"
             operation={() => activateOperation('addition')}
             highlightButton={highlightedButtons.addition}
+            theme={THEMES[selectedTheme].buttonTheme}
           />
         </View>
         <View style={styles.numPadRow}>
@@ -180,9 +282,18 @@ const App = () => {
             label="0"
             doubleSize={true}
             operation={() => concatenateDigit('0')}
+            theme={THEMES[selectedTheme].buttonTheme}
           />
-          <Button label="." operation={() => addDot()} />
-          <Button label="=" operation={() => generateResult()} />
+          <Button
+            label="."
+            operation={() => addDot()}
+            theme={THEMES[selectedTheme].buttonTheme}
+          />
+          <Button
+            label="="
+            operation={() => generateResult()}
+            theme={THEMES[selectedTheme].buttonTheme}
+          />
         </View>
       </View>
     </LinearGradient>
@@ -197,7 +308,12 @@ const styles = StyleSheet.create({
   },
   display: {
     flexDirection: 'row',
-    height: WINDOW_HEIGHT / 3,
+    height: WINDOW_HEIGHT / 4,
+  },
+  themes: {
+    flexDirection: 'row',
+    height: WINDOW_HEIGHT / 15,
+    marginBottom: 10,
   },
   numPad: {
     height: WINDOW_HEIGHT / 2,
