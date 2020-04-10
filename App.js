@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   Dimensions,
   TouchableHighlight,
+  AsyncStorage,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Display from './src/components/Display';
@@ -16,7 +18,7 @@ let secondOperand;
 let result;
 
 const THEMES = {
-  default: {
+  flamingo: {
     gradient: ['#FF69B4', '#de5b9c'],
     buttonTheme: {
       buttonBackgroundColor: '#de5b9c',
@@ -43,7 +45,9 @@ const THEMES = {
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
 const App = () => {
-  const [display, setDisplay] = useState(0);
+  const [selectedTheme, setSelectedTheme] = useState('flamingo');
+
+  const [display, setDisplay] = useState('0');
   const [operation, setOperation] = useState('');
   const [changeOperation, setChangeOperation] = useState(true);
   const [shouldConcatenateDigit, setShouldConcatenateDigit] = useState(false);
@@ -53,7 +57,7 @@ const App = () => {
     multiplication: false,
     division: false,
   });
-  const [selectedTheme, setSelectedTheme] = useState('psycho');
+  const [showExplosion, setShowExplosion] = useState(false);
 
   const concatenateDigit = (digit) => {
     setChangeOperation(false);
@@ -93,7 +97,17 @@ const App = () => {
 
       switch (operation) {
         case 'division':
-          result = firstOperand / secondOperand;
+          if (secondOperand === 0) {
+            setShowExplosion(true);
+            setTimeout(() => {
+              setShowExplosion(false);
+            }, 3200);
+            cancelButton();
+            return;
+          } else {
+            result = firstOperand / secondOperand;
+          }
+
           break;
         case 'multiplication':
           secondOperand = Number(display);
@@ -131,8 +145,12 @@ const App = () => {
   };
 
   const addDot = () => {
-    if (Math.round(display) === Number(display) && !display.includes('.')) {
-      setDisplay(`${display}.`);
+    console.log(display);
+    if (
+      Math.round(display) === Number(display) &&
+      !display.toString().includes('.')
+    ) {
+      setDisplay(display + '.');
       setShouldConcatenateDigit(true);
     }
     resetHighlightedButtons();
@@ -161,9 +179,39 @@ const App = () => {
 
   const changeTheme = (chosenTheme) => {
     setSelectedTheme(chosenTheme);
+    writeSelectedTheme(chosenTheme);
   };
 
-  return (
+  const writeSelectedTheme = async (chosenTheme) => {
+    try {
+      await AsyncStorage.setItem('theme', chosenTheme);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const readSelectedTheme = async () => {
+      try {
+        const value = await AsyncStorage.getItem('theme');
+        if (value !== null) {
+          setSelectedTheme(value);
+        } else {
+          setSelectedTheme('flamingo');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    readSelectedTheme();
+  }, []);
+
+  return showExplosion ? (
+    <Image
+      style={{ width: '100%', height: '100%' }}
+      source={require('./assets/explosion.gif')}
+    />
+  ) : (
     <LinearGradient
       style={styles.container}
       colors={THEMES[selectedTheme].gradient}
