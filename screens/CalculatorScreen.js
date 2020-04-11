@@ -9,11 +9,12 @@ import {
   Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Display from '../src/components/Display';
-import Button from '../src/components/Button';
-import ThemeButton from '../src/components/ThemeButton';
-import { THEMES } from '../src/config/themes';
-import { useSelector } from 'react-redux';
+import Display from '../components/Display';
+import Button from '../components/Button';
+import ThemeButton from '../components/ThemeButton';
+import { THEMES } from '../constants/themes';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSelectedTheme } from '../store/actions/themes';
 
 let firstOperand;
 let secondOperand;
@@ -22,7 +23,6 @@ let result;
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
 const CalculatorScreen = () => {
-  //   const [selectedTheme, setSelectedTheme] = useState('flamingo');
   const selectedTheme = useSelector((state) => state.themes.selectedTheme);
   const [display, setDisplay] = useState('0');
   const [operation, setOperation] = useState('');
@@ -35,6 +35,8 @@ const CalculatorScreen = () => {
     division: false,
   });
   const [showExplosion, setShowExplosion] = useState(false);
+
+  const dispatch = useDispatch();
 
   const concatenateDigit = (digit) => {
     setChangeOperation(false);
@@ -153,32 +155,20 @@ const CalculatorScreen = () => {
     });
   };
 
-  const changeTheme = (chosenTheme) => {
-    setSelectedTheme(chosenTheme);
-    writeSelectedTheme(chosenTheme);
-  };
-
-  const writeSelectedTheme = async (chosenTheme) => {
+  const readSelectedTheme = async () => {
     try {
-      await AsyncStorage.setItem('theme', chosenTheme);
+      const value = await AsyncStorage.getItem('theme');
+      if (value !== null && Object.keys(THEMES).includes(value)) {
+        dispatch(setSelectedTheme(value));
+      } else {
+        dispatch(setSelectedTheme('flamingo'));
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    const readSelectedTheme = async () => {
-      try {
-        const value = await AsyncStorage.getItem('theme');
-        if (value !== null && Object.keys(THEMES).includes(value)) {
-          setSelectedTheme(value);
-        } else {
-          setSelectedTheme('flamingo');
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
     readSelectedTheme();
   }, []);
 
@@ -203,7 +193,6 @@ const CalculatorScreen = () => {
               themeName={themeName}
               theme={THEMES[themeName]}
               selectedTheme={selectedTheme}
-              onThemeChange={changeTheme}
             />
           );
         })}
