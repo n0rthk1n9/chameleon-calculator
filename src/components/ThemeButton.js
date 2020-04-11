@@ -30,7 +30,7 @@ const ThemeButton = ({ themeName, theme, selectedTheme, onThemeChange }) => {
             color: theme.buttonTheme.buttonFontColor,
           }}
         >
-          {themeName}
+          {theme.titel}
         </Text>
       </TouchableHighlight>
     </View>

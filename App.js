@@ -12,35 +12,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Display from './src/components/Display';
 import Button from './src/components/Button';
 import ThemeButton from './src/components/ThemeButton';
+import { THEMES } from './src/config/themes';
 
 let firstOperand;
 let secondOperand;
 let result;
-
-const THEMES = {
-  flamingo: {
-    gradient: ['#FF69B4', '#de5b9c'],
-    buttonTheme: {
-      buttonBackgroundColor: '#de5b9c',
-      buttonPressColor: '#c8518b',
-      buttonFontColor: '#FFFFFF',
-    },
-    displayTheme: {
-      displayFontColor: '#FFFFFF',
-    },
-  },
-  psycho: {
-    gradient: ['#a7c4a0', '#e4fde1'],
-    buttonTheme: {
-      buttonBackgroundColor: '#fbfbf2',
-      buttonPressColor: '#31493c',
-      buttonFontColor: '#000000',
-    },
-    displayTheme: {
-      displayFontColor: '#000000',
-    },
-  },
-};
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
@@ -107,7 +83,6 @@ const App = () => {
           } else {
             result = firstOperand / secondOperand;
           }
-
           break;
         case 'multiplication':
           secondOperand = Number(display);
@@ -194,7 +169,7 @@ const App = () => {
     const readSelectedTheme = async () => {
       try {
         const value = await AsyncStorage.getItem('theme');
-        if (value !== null) {
+        if (value !== null && Object.keys(THEMES).includes(value)) {
           setSelectedTheme(value);
         } else {
           setSelectedTheme('flamingo');
