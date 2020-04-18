@@ -13,7 +13,9 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "de.innovation-future.chameleon-calculator",
+      "buildNumber": "1.0.0"
     }
   }
 }
