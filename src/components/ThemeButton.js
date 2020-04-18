@@ -26,7 +26,7 @@ const ThemeButton = ({ themeName, theme, selectedTheme, onThemeChange }) => {
       >
         <Text
           style={{
-            fontSize: 20,
+            fontSize: WINDOW_WITH > 320 ? 20 : 15,
             color: theme.buttonTheme.buttonFontColor,
           }}
         >
@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
     padding: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 5,
-    borderRadius: 15,
+    borderWidth: WINDOW_WITH > 320 ? 5 : 3,
+    borderRadius: WINDOW_WITH > 320 ? 15 : 12,
     marginHorizontal: 5,
   },
 });
