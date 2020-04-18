@@ -35,8 +35,8 @@ const ThemeButton = ({ themeName, theme, selectedTheme }) => {
         style={[
           styles.button,
           {
-            backgroundColor: theme.buttonTheme.buttonBackgroundColor,
-            borderColor:
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            borderBottomColor:
               themeName === selectedTheme ? '#000000' : theme.gradient[0],
           },
         ]}
@@ -46,7 +46,7 @@ const ThemeButton = ({ themeName, theme, selectedTheme }) => {
         <Text
           style={{
             fontSize: 20,
-            color: theme.buttonTheme.buttonFontColor,
+            color: '#000000',
           }}
         >
           {theme.titel}
@@ -58,12 +58,14 @@ const ThemeButton = ({ themeName, theme, selectedTheme }) => {
 
 const styles = StyleSheet.create({
   button: {
-    padding: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 5,
-    borderRadius: 15,
-    marginHorizontal: 5,
+    borderBottomWidth: 2,
+    borderTopRightRadius: 4,
+    borderTopLeftRadius: 4,
+    marginHorizontal: 10,
   },
 });
 

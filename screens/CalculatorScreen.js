@@ -185,18 +185,7 @@ const CalculatorScreen = () => {
       <View style={styles.display}>
         <Display display={display} theme={THEMES[selectedTheme].displayTheme} />
       </View>
-      <View style={styles.themes}>
-        {Object.keys(THEMES).map((themeName) => {
-          return (
-            <ThemeButton
-              key={themeName}
-              themeName={themeName}
-              theme={THEMES[themeName]}
-              selectedTheme={selectedTheme}
-            />
-          );
-        })}
-      </View>
+
       <View style={styles.numPad}>
         <View style={styles.numPadRow}>
           <Button
@@ -309,6 +298,18 @@ const CalculatorScreen = () => {
           />
         </View>
       </View>
+      <View style={styles.themes}>
+        {Object.keys(THEMES).map((themeName) => {
+          return (
+            <ThemeButton
+              key={themeName}
+              themeName={themeName}
+              theme={THEMES[themeName]}
+              selectedTheme={selectedTheme}
+            />
+          );
+        })}
+      </View>
     </LinearGradient>
   );
 };
@@ -326,6 +327,7 @@ const styles = StyleSheet.create({
   themes: {
     flexDirection: 'row',
     height: WINDOW_HEIGHT / 15,
+    marginTop: 20,
     marginBottom: 10,
   },
   numPad: {
