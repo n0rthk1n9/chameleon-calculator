@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import themesReducer from './store/reducers/theme';
+import themesReducer from './store/reducers/themes';
 import CalculatorScreen from './screens/CalculatorScreen';
 
 const rootReducer = combineReducers({

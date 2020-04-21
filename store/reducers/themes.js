@@ -1,5 +1,5 @@
 import { THEMES } from '../../constants/themes';
-import { SET_SELECTED_THEME } from '../actions/theme';
+import { SET_SELECTED_THEME } from '../actions/themes';
 
 const initialState = {
   selectedTheme: Object.keys(THEMES)[0],

@@ -14,7 +14,7 @@ import Button from '../components/Button';
 import ThemeButton from '../components/ThemeButton';
 import { THEMES } from '../constants/themes';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSelectedTheme } from '../store/actions/theme';
+import { setSelectedTheme } from '../store/actions/themes';
 
 let firstOperand;
 let secondOperand;
