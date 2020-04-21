@@ -15,6 +15,7 @@ import ThemeButton from '../components/ThemeButton';
 import { THEMES } from '../constants/themes';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSelectedTheme } from '../store/actions/themes';
+import { setDisplay } from '../store/actions/display';
 
 let firstOperand;
 let secondOperand;
@@ -24,7 +25,7 @@ const WINDOW_HEIGHT = Dimensions.get('window').height;
 
 const CalculatorScreen = () => {
   const selectedTheme = useSelector((state) => state.themes.selectedTheme);
-  const [display, setDisplay] = useState('0');
+  const display = useSelector((state) => state.display.display);
   const [operation, setOperation] = useState('');
   const [changeOperation, setChangeOperation] = useState(true);
   const [shouldConcatenateDigit, setShouldConcatenateDigit] = useState(false);
@@ -44,10 +45,10 @@ const CalculatorScreen = () => {
     setChangeOperation(false);
     if (shouldConcatenateDigit) {
       if (Number(display) <= 100000000) {
-        setDisplay(display + digit);
+        dispatch(setDisplay(display + digit));
       }
     } else {
-      setDisplay(digit);
+      dispatch(setDisplay(digit));
       setShouldConcatenateDigit(true);
     }
   };
@@ -106,7 +107,7 @@ const CalculatorScreen = () => {
           return null;
       }
 
-      setDisplay(+result.toFixed(5));
+      dispatch(setDisplay(+result.toFixed(5)));
     }
 
     setOperation('');
@@ -120,7 +121,7 @@ const CalculatorScreen = () => {
     if (!shouldConcatenateDigit && display === 0) {
       setOperation('');
     }
-    setDisplay(0);
+    dispatch(setDisplay(0));
     setShouldConcatenateDigit(false);
     resetHighlightedButtons();
     setChangeOperation(true);
@@ -132,31 +133,31 @@ const CalculatorScreen = () => {
       !display.toString().includes('.')
     ) {
       if (resultGenerated) {
-        setDisplay(0 + '.');
+        dispatch(setDisplay(0 + '.'));
         setShouldConcatenateDigit(true);
       } else {
-        setDisplay(display + '.');
+        dispatch(setDisplay(display + '.'));
         setShouldConcatenateDigit(true);
       }
     } else {
       if (resultGenerated) {
-        setDisplay(0 + '.');
+        dispatch(setDisplay(0 + '.'));
         setShouldConcatenateDigit(true);
       } else {
-        setDisplay(display);
+        dispatch(setDisplay(display));
         setShouldConcatenateDigit(true);
       }
     }
   };
 
   const percentage = () => {
-    setDisplay(Number(display) / 100);
+    dispatch(setDisplay(Number(display) / 100));
     setShouldConcatenateDigit(false);
     resetHighlightedButtons();
   };
 
   const invertSignal = () => {
-    setDisplay(Number(display) * -1);
+    dispatch(setDisplay(Number(display) * -1));
     resetHighlightedButtons();
   };
 
