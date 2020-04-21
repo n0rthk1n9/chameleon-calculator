@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { setSelectedTheme } from '../store/actions/themes';
+import { setSelectedTheme } from '../store/actions/theme';
 
 const WINDOW_WITH = Dimensions.get('window').width;
 
