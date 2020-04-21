@@ -70,6 +70,7 @@ const CalculatorScreen = () => {
       [chosenOperation]: true,
     });
     setChangeOperation(true);
+    setResultGenerated(true);
   };
 
   const generateResult = () => {
@@ -150,6 +151,7 @@ const CalculatorScreen = () => {
 
   const percentage = () => {
     setDisplay(Number(display) / 100);
+    setShouldConcatenateDigit(false);
     resetHighlightedButtons();
   };
 
