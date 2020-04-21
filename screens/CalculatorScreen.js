@@ -15,7 +15,7 @@ import ThemeButton from '../components/ThemeButton';
 import { THEMES } from '../constants/themes';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSelectedTheme } from '../store/actions/themes';
-import { setDisplay } from '../store/actions/display';
+import { setDisplay, setConcatenateDigit } from '../store/actions/display';
 
 let firstOperand;
 let secondOperand;
@@ -26,9 +26,11 @@ const WINDOW_HEIGHT = Dimensions.get('window').height;
 const CalculatorScreen = () => {
   const selectedTheme = useSelector((state) => state.themes.selectedTheme);
   const display = useSelector((state) => state.display.display);
+  const concatenateDigit = useSelector(
+    (state) => state.display.concatenateDigit
+  );
   const [operation, setOperation] = useState('');
   const [changeOperation, setChangeOperation] = useState(true);
-  const [shouldConcatenateDigit, setShouldConcatenateDigit] = useState(false);
   const [highlightedButtons, setHighlightedButtons] = useState({
     addition: false,
     subtraction: false,
@@ -40,16 +42,16 @@ const CalculatorScreen = () => {
 
   const dispatch = useDispatch();
 
-  const concatenateDigit = (digit) => {
+  const handleConcatenateDigit = (digit) => {
     setResultGenerated(false);
     setChangeOperation(false);
-    if (shouldConcatenateDigit) {
+    if (concatenateDigit) {
       if (Number(display) <= 100000000) {
         dispatch(setDisplay(display + digit));
       }
     } else {
       dispatch(setDisplay(digit));
-      setShouldConcatenateDigit(true);
+      dispatch(setConcatenateDigit(true));
     }
   };
 
@@ -61,7 +63,7 @@ const CalculatorScreen = () => {
       firstOperand = Number(display);
     }
 
-    setShouldConcatenateDigit(false);
+    dispatch(setConcatenateDigit(false));
     setOperation(chosenOperation);
     setHighlightedButtons({
       addition: false,
@@ -112,17 +114,17 @@ const CalculatorScreen = () => {
 
     setOperation('');
     setChangeOperation(true);
-    setShouldConcatenateDigit(false);
+    dispatch(setConcatenateDigit(false));
     resetHighlightedButtons();
     setResultGenerated(true);
   };
 
   const cancelButton = () => {
-    if (!shouldConcatenateDigit && display === 0) {
+    if (!concatenateDigit && display === 0) {
       setOperation('');
     }
     dispatch(setDisplay(0));
-    setShouldConcatenateDigit(false);
+    dispatch(setConcatenateDigit(false));
     resetHighlightedButtons();
     setChangeOperation(true);
   };
@@ -134,25 +136,25 @@ const CalculatorScreen = () => {
     ) {
       if (resultGenerated) {
         dispatch(setDisplay(0 + '.'));
-        setShouldConcatenateDigit(true);
+        dispatch(setConcatenateDigit(true));
       } else {
         dispatch(setDisplay(display + '.'));
-        setShouldConcatenateDigit(true);
+        dispatch(setConcatenateDigit(true));
       }
     } else {
       if (resultGenerated) {
         dispatch(setDisplay(0 + '.'));
-        setShouldConcatenateDigit(true);
+        dispatch(setConcatenateDigit(true));
       } else {
         dispatch(setDisplay(display));
-        setShouldConcatenateDigit(true);
+        dispatch(setConcatenateDigit(true));
       }
     }
   };
 
   const percentage = () => {
     dispatch(setDisplay(Number(display) / 100));
-    setShouldConcatenateDigit(false);
+    dispatch(setConcatenateDigit(false));
     resetHighlightedButtons();
   };
 
@@ -239,17 +241,17 @@ const CalculatorScreen = () => {
         <View style={styles.numPadRow}>
           <Button
             label="7"
-            operation={() => concatenateDigit('7')}
+            operation={() => handleConcatenateDigit('7')}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="8"
-            operation={() => concatenateDigit('8')}
+            operation={() => handleConcatenateDigit('8')}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="9"
-            operation={() => concatenateDigit('9')}
+            operation={() => handleConcatenateDigit('9')}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
@@ -262,17 +264,17 @@ const CalculatorScreen = () => {
         <View style={styles.numPadRow}>
           <Button
             label="4"
-            operation={() => concatenateDigit('4')}
+            operation={() => handleConcatenateDigit('4')}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="5"
-            operation={() => concatenateDigit('5')}
+            operation={() => handleConcatenateDigit('5')}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="6"
-            operation={() => concatenateDigit('6')}
+            operation={() => handleConcatenateDigit('6')}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
@@ -285,17 +287,17 @@ const CalculatorScreen = () => {
         <View style={styles.numPadRow}>
           <Button
             label="1"
-            operation={() => concatenateDigit('1')}
+            operation={() => handleConcatenateDigit('1')}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="2"
-            operation={() => concatenateDigit('2')}
+            operation={() => handleConcatenateDigit('2')}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="3"
-            operation={() => concatenateDigit('3')}
+            operation={() => handleConcatenateDigit('3')}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
@@ -309,7 +311,7 @@ const CalculatorScreen = () => {
           <Button
             label="0"
             doubleSize={true}
-            operation={() => concatenateDigit('0')}
+            operation={() => handleConcatenateDigit('0')}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
