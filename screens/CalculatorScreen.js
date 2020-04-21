@@ -35,10 +35,12 @@ const CalculatorScreen = () => {
     division: false,
   });
   const [showExplosion, setShowExplosion] = useState(false);
+  const [resultGenerated, setResultGenerated] = useState(false);
 
   const dispatch = useDispatch();
 
   const concatenateDigit = (digit) => {
+    setResultGenerated(false);
     setChangeOperation(false);
     if (shouldConcatenateDigit) {
       if (Number(display) <= 100000000) {
@@ -110,6 +112,7 @@ const CalculatorScreen = () => {
     setChangeOperation(true);
     setShouldConcatenateDigit(false);
     resetHighlightedButtons();
+    setResultGenerated(true);
   };
 
   const cancelButton = () => {
@@ -123,17 +126,26 @@ const CalculatorScreen = () => {
   };
 
   const addDot = () => {
-    console.log(display);
     if (
       Math.round(display) === Number(display) &&
       !display.toString().includes('.')
     ) {
-      setDisplay(display + '.');
-      setShouldConcatenateDigit(true);
+      if (resultGenerated) {
+        setDisplay(0 + '.');
+        setShouldConcatenateDigit(true);
+      } else {
+        setDisplay(display + '.');
+        setShouldConcatenateDigit(true);
+      }
+    } else {
+      if (resultGenerated) {
+        setDisplay(0 + '.');
+        setShouldConcatenateDigit(true);
+      } else {
+        setDisplay(display);
+        setShouldConcatenateDigit(true);
+      }
     }
-    resetHighlightedButtons();
-    setChangeOperation(true);
-    setOperation('');
   };
 
   const percentage = () => {
