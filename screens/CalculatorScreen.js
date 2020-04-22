@@ -14,7 +14,13 @@ import Button from '../components/Button';
 import ThemeButton from '../components/ThemeButton';
 import { THEMES } from '../constants/themes';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSelectedTheme } from '../store/actions/themes';
+import {
+  setSelectedTheme,
+  setAdditionButtonHighlighted,
+  setSubtractionButtonHighlighted,
+  setMultiplicationButtonHighlighted,
+  setDivisionButtonHighlighted,
+} from '../store/actions/themes';
 import { setDisplay, setConcatenateDigit } from '../store/actions/display';
 
 let firstOperand;
@@ -29,14 +35,26 @@ const CalculatorScreen = () => {
   const concatenateDigit = useSelector(
     (state) => state.display.concatenateDigit
   );
+  const highlightedAdditionButton = useSelector(
+    (state) => state.themes.highlightedAdditionButton
+  );
+  const highlightedSubtractionButton = useSelector(
+    (state) => state.themes.highlightedSubtractionButton
+  );
+  const highlightedMultiplicationButton = useSelector(
+    (state) => state.themes.highlightedMultiplicationButton
+  );
+  const highlightedDivisionButton = useSelector(
+    (state) => state.themes.highlightedDivisionButton
+  );
   const [operation, setOperation] = useState('');
   const [changeOperation, setChangeOperation] = useState(true);
-  const [highlightedButtons, setHighlightedButtons] = useState({
-    addition: false,
-    subtraction: false,
-    multiplication: false,
-    division: false,
-  });
+  //   const [highlightedButtons, setHighlightedButtons] = useState({
+  //     addition: false,
+  //     subtraction: false,
+  //     multiplication: false,
+  //     division: false,
+  //   });
   const [showExplosion, setShowExplosion] = useState(false);
   const [resultGenerated, setResultGenerated] = useState(false);
 
@@ -65,15 +83,24 @@ const CalculatorScreen = () => {
 
     dispatch(setConcatenateDigit(false));
     setOperation(chosenOperation);
-    setHighlightedButtons({
-      addition: false,
-      subtraction: false,
-      multiplication: false,
-      division: false,
-      [chosenOperation]: true,
-    });
     setChangeOperation(true);
     setResultGenerated(true);
+    switch (chosenOperation) {
+      case 'addition':
+        dispatch(setAdditionButtonHighlighted(true));
+        break;
+      case 'subtraction':
+        dispatch(setSubtractionButtonHighlighted(true));
+        break;
+      case 'multiplication':
+        dispatch(setMultiplicationButtonHighlighted(true));
+        break;
+      case 'division':
+        dispatch(setDivisionButtonHighlighted(true));
+        break;
+      default:
+        break;
+    }
   };
 
   const generateResult = () => {
@@ -164,12 +191,10 @@ const CalculatorScreen = () => {
   };
 
   const resetHighlightedButtons = () => {
-    setHighlightedButtons({
-      addition: false,
-      subtraction: false,
-      multiplication: false,
-      division: false,
-    });
+    dispatch(setAdditionButtonHighlighted(false));
+    dispatch(setSubtractionButtonHighlighted(false));
+    dispatch(setMultiplicationButtonHighlighted(false));
+    dispatch(setDivisionButtonHighlighted(false));
   };
 
   const readSelectedTheme = async () => {
@@ -234,7 +259,7 @@ const CalculatorScreen = () => {
           <Button
             label="÷"
             operation={() => activateOperation('division')}
-            highlightButton={highlightedButtons.division}
+            highlightButton={highlightedDivisionButton}
             theme={THEMES[selectedTheme].buttonTheme}
           />
         </View>
@@ -257,7 +282,7 @@ const CalculatorScreen = () => {
           <Button
             label="×"
             operation={() => activateOperation('multiplication')}
-            highlightButton={highlightedButtons.multiplication}
+            highlightButton={highlightedMultiplicationButton}
             theme={THEMES[selectedTheme].buttonTheme}
           />
         </View>
@@ -280,7 +305,7 @@ const CalculatorScreen = () => {
           <Button
             label="-"
             operation={() => activateOperation('subtraction')}
-            highlightButton={highlightedButtons.subtraction}
+            highlightButton={highlightedSubtractionButton}
             theme={THEMES[selectedTheme].buttonTheme}
           />
         </View>
@@ -303,7 +328,7 @@ const CalculatorScreen = () => {
           <Button
             label="+"
             operation={() => activateOperation('addition')}
-            highlightButton={highlightedButtons.addition}
+            highlightButton={highlightedAdditionButton}
             theme={THEMES[selectedTheme].buttonTheme}
           />
         </View>
