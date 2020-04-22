@@ -49,12 +49,6 @@ const CalculatorScreen = () => {
   );
   const [operation, setOperation] = useState('');
   const [changeOperation, setChangeOperation] = useState(true);
-  //   const [highlightedButtons, setHighlightedButtons] = useState({
-  //     addition: false,
-  //     subtraction: false,
-  //     multiplication: false,
-  //     division: false,
-  //   });
   const [showExplosion, setShowExplosion] = useState(false);
   const [resultGenerated, setResultGenerated] = useState(false);
 
