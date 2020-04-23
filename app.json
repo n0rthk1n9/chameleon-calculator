@@ -5,7 +5,7 @@
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": ["ios"],
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "updates": {
@@ -15,7 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "de.innovation-future.chameleon-calculator",
-      "buildNumber": "1.0.1"
+      "buildNumber": "1.0.2"
     }
   }
 }
