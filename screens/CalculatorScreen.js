@@ -22,7 +22,10 @@ import {
   setDivisionButtonHighlighted,
 } from '../store/actions/themes';
 import { setDisplay, setConcatenateDigit } from '../store/actions/display';
-import { setActiveOperation } from '../store/actions/operations';
+import {
+  setActiveOperation,
+  setChangeOperation,
+} from '../store/actions/operations';
 
 let firstOperand;
 let secondOperand;
@@ -51,7 +54,9 @@ const CalculatorScreen = () => {
   const activeOperation = useSelector(
     (state) => state.operations.activeOperation
   );
-  const [changeOperation, setChangeOperation] = useState(true);
+  const changeOperation = useSelector(
+    (state) => state.operations.changeOperation
+  );
   const [showExplosion, setShowExplosion] = useState(false);
   const [resultGenerated, setResultGenerated] = useState(false);
 
@@ -59,7 +64,7 @@ const CalculatorScreen = () => {
 
   const handleConcatenateDigit = (digit) => {
     setResultGenerated(false);
-    setChangeOperation(false);
+    dispatch(setChangeOperation(false));
     if (concatenateDigit) {
       if (Number(display) <= 100000000) {
         dispatch(setDisplay(display + digit));
@@ -80,7 +85,7 @@ const CalculatorScreen = () => {
 
     dispatch(setConcatenateDigit(false));
     dispatch(setActiveOperation(chosenOperation));
-    setChangeOperation(true);
+    dispatch(setChangeOperation(true));
     setResultGenerated(true);
     switch (chosenOperation) {
       case 'addition':
@@ -137,7 +142,7 @@ const CalculatorScreen = () => {
     }
 
     dispatch(setActiveOperation(''));
-    setChangeOperation(true);
+    dispatch(setChangeOperation(true));
     dispatch(setConcatenateDigit(false));
     resetHighlightedButtons();
     setResultGenerated(true);
@@ -150,7 +155,7 @@ const CalculatorScreen = () => {
     dispatch(setDisplay(0));
     dispatch(setConcatenateDigit(false));
     resetHighlightedButtons();
-    setChangeOperation(true);
+    dispatch(setChangeOperation(true));
   };
 
   const addDot = () => {
