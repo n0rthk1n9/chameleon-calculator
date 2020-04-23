@@ -5,6 +5,7 @@ import {
   SET_SUBTRACTION_BUTTON_HIGHLIGHTED,
   SET_MULTIPLICATION_BUTTON_HIGHLIGHTED,
   SET_DIVISION_BUTTON_HIGHLIGHTED,
+  SET_SHOW_EXPLOSION,
 } from '../actions/themes';
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
   subtractionButtonHighlighted: false,
   multiplicationButtonHighlighted: false,
   divisionButtonHighlighted: false,
+  showExplosion: false,
 };
 
 const themesReducer = (state = initialState, action) => {
@@ -39,6 +41,8 @@ const themesReducer = (state = initialState, action) => {
         ...state,
         divisionButtonHighlighted: action.divisionButtonHighlighted,
       };
+    case SET_SHOW_EXPLOSION:
+      return { ...state, showExplosion: action.showExplosion };
     default:
       return state;
   }

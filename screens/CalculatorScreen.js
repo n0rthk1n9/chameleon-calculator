@@ -20,6 +20,7 @@ import {
   setSubtractionButtonHighlighted,
   setMultiplicationButtonHighlighted,
   setDivisionButtonHighlighted,
+  setShowExplosion,
 } from '../store/actions/themes';
 import { setDisplay, setConcatenateDigit } from '../store/actions/display';
 import {
@@ -57,7 +58,7 @@ const CalculatorScreen = () => {
   const changeOperation = useSelector(
     (state) => state.operations.changeOperation
   );
-  const [showExplosion, setShowExplosion] = useState(false);
+  const showExplosion = useSelector((state) => state.themes.showExplosion);
   const [resultGenerated, setResultGenerated] = useState(false);
 
   const dispatch = useDispatch();
@@ -112,9 +113,9 @@ const CalculatorScreen = () => {
       switch (activeOperation) {
         case 'division':
           if (secondOperand === 0) {
-            setShowExplosion(true);
+            dispatch(setShowExplosion(true));
             setTimeout(() => {
-              setShowExplosion(false);
+              dispatch(setShowExplosion(false));
             }, 3200);
             cancelButton();
             return;
