@@ -26,6 +26,7 @@ import { setDisplay, setConcatenateDigit } from '../store/actions/display';
 import {
   setActiveOperation,
   setChangeOperation,
+  setResultGenerated,
 } from '../store/actions/operations';
 
 let firstOperand;
@@ -35,11 +36,12 @@ let result;
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
 const CalculatorScreen = () => {
-  const selectedTheme = useSelector((state) => state.themes.selectedTheme);
   const display = useSelector((state) => state.display.display);
   const concatenateDigit = useSelector(
     (state) => state.display.concatenateDigit
   );
+
+  const selectedTheme = useSelector((state) => state.themes.selectedTheme);
   const additionButtonHighlighted = useSelector(
     (state) => state.themes.additionButtonHighlighted
   );
@@ -52,19 +54,22 @@ const CalculatorScreen = () => {
   const divisionButtonHighlighted = useSelector(
     (state) => state.themes.divisionButtonHighlighted
   );
+
   const activeOperation = useSelector(
     (state) => state.operations.activeOperation
   );
   const changeOperation = useSelector(
     (state) => state.operations.changeOperation
   );
+  const resultGenerated = useSelector(
+    (state) => state.operations.resultGenerated
+  );
   const showExplosion = useSelector((state) => state.themes.showExplosion);
-  const [resultGenerated, setResultGenerated] = useState(false);
 
   const dispatch = useDispatch();
 
   const handleConcatenateDigit = (digit) => {
-    setResultGenerated(false);
+    dispatch(setResultGenerated(false));
     dispatch(setChangeOperation(false));
     if (concatenateDigit) {
       if (Number(display) <= 100000000) {
@@ -87,7 +92,7 @@ const CalculatorScreen = () => {
     dispatch(setConcatenateDigit(false));
     dispatch(setActiveOperation(chosenOperation));
     dispatch(setChangeOperation(true));
-    setResultGenerated(true);
+    dispatch(setResultGenerated(true));
     switch (chosenOperation) {
       case 'addition':
         dispatch(setAdditionButtonHighlighted(true));
@@ -146,7 +151,7 @@ const CalculatorScreen = () => {
     dispatch(setChangeOperation(true));
     dispatch(setConcatenateDigit(false));
     resetHighlightedButtons();
-    setResultGenerated(true);
+    dispatch(setResultGenerated(true));
   };
 
   const cancelButton = () => {
