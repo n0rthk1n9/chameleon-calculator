@@ -22,6 +22,7 @@ import {
   setDivisionButtonHighlighted,
 } from '../store/actions/themes';
 import { setDisplay, setConcatenateDigit } from '../store/actions/display';
+import { setActiveOperation } from '../store/actions/operations';
 
 let firstOperand;
 let secondOperand;
@@ -47,7 +48,9 @@ const CalculatorScreen = () => {
   const divisionButtonHighlighted = useSelector(
     (state) => state.themes.divisionButtonHighlighted
   );
-  const [operation, setOperation] = useState('');
+  const activeOperation = useSelector(
+    (state) => state.operations.activeOperation
+  );
   const [changeOperation, setChangeOperation] = useState(true);
   const [showExplosion, setShowExplosion] = useState(false);
   const [resultGenerated, setResultGenerated] = useState(false);
@@ -68,7 +71,7 @@ const CalculatorScreen = () => {
   };
 
   const activateOperation = (chosenOperation) => {
-    if (operation !== '' && !changeOperation) {
+    if (activeOperation !== '' && !changeOperation) {
       generateResult();
       firstOperand = result;
     } else {
@@ -76,7 +79,7 @@ const CalculatorScreen = () => {
     }
 
     dispatch(setConcatenateDigit(false));
-    setOperation(chosenOperation);
+    dispatch(setActiveOperation(chosenOperation));
     setChangeOperation(true);
     setResultGenerated(true);
     switch (chosenOperation) {
@@ -101,7 +104,7 @@ const CalculatorScreen = () => {
     if (!changeOperation) {
       secondOperand = Number(display);
 
-      switch (operation) {
+      switch (activeOperation) {
         case 'division':
           if (secondOperand === 0) {
             setShowExplosion(true);
@@ -133,7 +136,7 @@ const CalculatorScreen = () => {
       dispatch(setDisplay(+result.toFixed(5)));
     }
 
-    setOperation('');
+    dispatch(setActiveOperation(''));
     setChangeOperation(true);
     dispatch(setConcatenateDigit(false));
     resetHighlightedButtons();
@@ -142,7 +145,7 @@ const CalculatorScreen = () => {
 
   const cancelButton = () => {
     if (!concatenateDigit && display === 0) {
-      setOperation('');
+      dispatch(setActiveOperation(''));
     }
     dispatch(setDisplay(0));
     dispatch(setConcatenateDigit(false));
