@@ -5,11 +5,30 @@ import {
   Text,
   TouchableHighlight,
   Dimensions,
+  AsyncStorage,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
+
+import { setSelectedTheme } from '../store/actions/themes';
 
 const WINDOW_WITH = Dimensions.get('window').width;
 
-const ThemeButton = ({ themeName, theme, selectedTheme, onThemeChange }) => {
+const ThemeButton = ({ themeName, theme, selectedTheme }) => {
+  const dispatch = useDispatch();
+
+  const writeSelectedTheme = async (chosenTheme) => {
+    try {
+      await AsyncStorage.setItem('theme', chosenTheme);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const selectedThemeHandler = () => {
+    dispatch(setSelectedTheme(themeName));
+    writeSelectedTheme(themeName);
+  };
+
   return (
     <View>
       <TouchableHighlight
@@ -22,7 +41,7 @@ const ThemeButton = ({ themeName, theme, selectedTheme, onThemeChange }) => {
           },
         ]}
         underlayColor={theme.buttonTheme.buttonPressColor}
-        onPress={() => onThemeChange(themeName)}
+        onPress={selectedThemeHandler}
       >
         <Text
           style={{
