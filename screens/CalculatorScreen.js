@@ -11,7 +11,6 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import Display from '../components/Display';
 import Button from '../components/Button';
-import ThemeButton from '../components/ThemeButton';
 import { THEMES } from '../constants/themes';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -235,18 +234,6 @@ const CalculatorScreen = () => {
       <View style={styles.display}>
         <Display display={display} theme={THEMES[selectedTheme].displayTheme} />
       </View>
-      <View style={styles.themes}>
-        {Object.keys(THEMES).map((themeName) => {
-          return (
-            <ThemeButton
-              key={themeName}
-              themeName={themeName}
-              theme={THEMES[themeName]}
-              selectedTheme={selectedTheme}
-            />
-          );
-        })}
-      </View>
       <View style={styles.numPad}>
         <View style={styles.numPadRow}>
           <Button
@@ -372,11 +359,6 @@ const styles = StyleSheet.create({
   display: {
     flexDirection: 'row',
     height: WINDOW_HEIGHT / 4,
-  },
-  themes: {
-    flexDirection: 'row',
-    height: WINDOW_HEIGHT / 15,
-    marginBottom: 10,
   },
   numPad: {
     height: WINDOW_HEIGHT / 2,

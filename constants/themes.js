@@ -1,6 +1,6 @@
 export const THEMES = {
   flamingo: {
-    titel: 'Flamingo',
+    title: 'Flamingo',
     gradient: ['#FF69B4', '#de5b9c'],
     buttonTheme: {
       buttonBackgroundColor: '#de5b9c',
@@ -12,7 +12,7 @@ export const THEMES = {
     },
   },
   avocado: {
-    titel: 'Avocado',
+    title: 'Avocado',
     gradient: ['#a7c4a0', '#e4fde1'],
     buttonTheme: {
       buttonBackgroundColor: '#fbfbf2',
@@ -24,7 +24,7 @@ export const THEMES = {
     },
   },
   berry: {
-    titel: 'Berry',
+    title: 'Berry',
     gradient: ['#6bbaec', '#3066be'],
     buttonTheme: {
       buttonBackgroundColor: '#aa4465',
