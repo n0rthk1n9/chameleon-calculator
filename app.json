@@ -3,22 +3,18 @@
     "name": "Chameleon Calculator",
     "slug": "chameleon-calculator",
     "privacy": "public",
-    "platforms": [
-      "ios"
-    ],
-    "version": "1.0.2",
+    "platforms": ["ios"],
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "de.innovation-future.chameleon-calculator",
-      "buildNumber": "1.0.2"
+      "buildNumber": "1.0.3"
     }
   }
 }
