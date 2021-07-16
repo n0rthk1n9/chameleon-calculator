@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,13 +7,13 @@ import {
   TouchableHighlight,
   AsyncStorage,
   Image,
-} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import Display from '../components/Display';
-import Button from '../components/Button';
-import ThemeButton from '../components/ThemeButton';
-import { THEMES } from '../constants/themes';
-import { useSelector, useDispatch } from 'react-redux';
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import Display from "../components/Display";
+import Button from "../components/Button";
+import ThemeButton from "../components/ThemeButton";
+import { THEMES } from "../constants/themes";
+import { useSelector, useDispatch } from "react-redux";
 import {
   setSelectedTheme,
   setAdditionButtonHighlighted,
@@ -21,19 +21,19 @@ import {
   setMultiplicationButtonHighlighted,
   setDivisionButtonHighlighted,
   setShowExplosion,
-} from '../store/actions/themes';
-import { setDisplay, setConcatenateDigit } from '../store/actions/display';
+} from "../store/actions/themes";
+import { setDisplay, setConcatenateDigit } from "../store/actions/display";
 import {
   setActiveOperation,
   setChangeOperation,
   setResultGenerated,
-} from '../store/actions/operations';
+} from "../store/actions/operations";
 
 let firstOperand;
 let secondOperand;
 let result;
 
-const WINDOW_HEIGHT = Dimensions.get('window').height;
+const WINDOW_HEIGHT = Dimensions.get("window").height;
 
 const CalculatorScreen = () => {
   const display = useSelector((state) => state.display.display);
@@ -82,7 +82,7 @@ const CalculatorScreen = () => {
   };
 
   const activateOperation = (chosenOperation) => {
-    if (activeOperation !== '' && !changeOperation) {
+    if (activeOperation !== "" && !changeOperation) {
       generateResult();
       firstOperand = result;
     } else {
@@ -94,16 +94,16 @@ const CalculatorScreen = () => {
     dispatch(setChangeOperation(true));
     dispatch(setResultGenerated(true));
     switch (chosenOperation) {
-      case 'addition':
+      case "addition":
         dispatch(setAdditionButtonHighlighted(true));
         break;
-      case 'subtraction':
+      case "subtraction":
         dispatch(setSubtractionButtonHighlighted(true));
         break;
-      case 'multiplication':
+      case "multiplication":
         dispatch(setMultiplicationButtonHighlighted(true));
         break;
-      case 'division':
+      case "division":
         dispatch(setDivisionButtonHighlighted(true));
         break;
       default:
@@ -116,7 +116,7 @@ const CalculatorScreen = () => {
       secondOperand = Number(display);
 
       switch (activeOperation) {
-        case 'division':
+        case "division":
           if (secondOperand === 0) {
             dispatch(setShowExplosion(true));
             setTimeout(() => {
@@ -128,15 +128,15 @@ const CalculatorScreen = () => {
             result = firstOperand / secondOperand;
           }
           break;
-        case 'multiplication':
+        case "multiplication":
           secondOperand = Number(display);
           result = firstOperand * secondOperand;
           break;
-        case 'subtraction':
+        case "subtraction":
           secondOperand = Number(display);
           result = firstOperand - secondOperand;
           break;
-        case 'addition':
+        case "addition":
           secondOperand = Number(display);
           result = firstOperand + secondOperand;
           break;
@@ -147,7 +147,7 @@ const CalculatorScreen = () => {
       dispatch(setDisplay(+result.toFixed(5)));
     }
 
-    dispatch(setActiveOperation(''));
+    dispatch(setActiveOperation(""));
     dispatch(setChangeOperation(true));
     dispatch(setConcatenateDigit(false));
     resetHighlightedButtons();
@@ -156,7 +156,7 @@ const CalculatorScreen = () => {
 
   const cancelButton = () => {
     if (!concatenateDigit && display === 0) {
-      dispatch(setActiveOperation(''));
+      dispatch(setActiveOperation(""));
     }
     dispatch(setDisplay(0));
     dispatch(setConcatenateDigit(false));
@@ -167,18 +167,18 @@ const CalculatorScreen = () => {
   const addDot = () => {
     if (
       Math.round(display) === Number(display) &&
-      !display.toString().includes('.')
+      !display.toString().includes(".")
     ) {
       if (resultGenerated) {
-        dispatch(setDisplay(0 + '.'));
+        dispatch(setDisplay(0 + "."));
         dispatch(setConcatenateDigit(true));
       } else {
-        dispatch(setDisplay(display + '.'));
+        dispatch(setDisplay(display + "."));
         dispatch(setConcatenateDigit(true));
       }
     } else {
       if (resultGenerated) {
-        dispatch(setDisplay(0 + '.'));
+        dispatch(setDisplay(0 + "."));
         dispatch(setConcatenateDigit(true));
       } else {
         dispatch(setDisplay(display));
@@ -207,11 +207,11 @@ const CalculatorScreen = () => {
 
   const readSelectedTheme = async () => {
     try {
-      const value = await AsyncStorage.getItem('theme');
+      const value = await AsyncStorage.getItem("theme");
       if (value !== null && Object.keys(THEMES).includes(value)) {
         dispatch(setSelectedTheme(value));
       } else {
-        dispatch(setSelectedTheme('flamingo'));
+        dispatch(setSelectedTheme("flamingo"));
       }
     } catch (error) {
       console.log(error);
@@ -224,8 +224,8 @@ const CalculatorScreen = () => {
 
   return showExplosion ? (
     <Image
-      style={{ width: '100%', height: '100%' }}
-      source={require('../assets/explosion.gif')}
+      style={{ width: "90%", height: "100%" }}
+      source={require("../assets/explosion.gif")}
     />
   ) : (
     <LinearGradient
@@ -250,7 +250,7 @@ const CalculatorScreen = () => {
       <View style={styles.numPad}>
         <View style={styles.numPadRow}>
           <Button
-            label={display ? 'C' : 'AC'}
+            label={display ? "C" : "AC"}
             operation={() => cancelButton()}
             theme={THEMES[selectedTheme].buttonTheme}
           />
@@ -266,7 +266,7 @@ const CalculatorScreen = () => {
           />
           <Button
             label="÷"
-            operation={() => activateOperation('division')}
+            operation={() => activateOperation("division")}
             highlightButton={divisionButtonHighlighted}
             theme={THEMES[selectedTheme].buttonTheme}
           />
@@ -274,22 +274,22 @@ const CalculatorScreen = () => {
         <View style={styles.numPadRow}>
           <Button
             label="7"
-            operation={() => handleConcatenateDigit('7')}
+            operation={() => handleConcatenateDigit("7")}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="8"
-            operation={() => handleConcatenateDigit('8')}
+            operation={() => handleConcatenateDigit("8")}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="9"
-            operation={() => handleConcatenateDigit('9')}
+            operation={() => handleConcatenateDigit("9")}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="×"
-            operation={() => activateOperation('multiplication')}
+            operation={() => activateOperation("multiplication")}
             highlightButton={multiplicationButtonHighlighted}
             theme={THEMES[selectedTheme].buttonTheme}
           />
@@ -297,22 +297,22 @@ const CalculatorScreen = () => {
         <View style={styles.numPadRow}>
           <Button
             label="4"
-            operation={() => handleConcatenateDigit('4')}
+            operation={() => handleConcatenateDigit("4")}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="5"
-            operation={() => handleConcatenateDigit('5')}
+            operation={() => handleConcatenateDigit("5")}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="6"
-            operation={() => handleConcatenateDigit('6')}
+            operation={() => handleConcatenateDigit("6")}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="-"
-            operation={() => activateOperation('subtraction')}
+            operation={() => activateOperation("subtraction")}
             highlightButton={subtractionButtonHighlighted}
             theme={THEMES[selectedTheme].buttonTheme}
           />
@@ -320,22 +320,22 @@ const CalculatorScreen = () => {
         <View style={styles.numPadRow}>
           <Button
             label="1"
-            operation={() => handleConcatenateDigit('1')}
+            operation={() => handleConcatenateDigit("1")}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="2"
-            operation={() => handleConcatenateDigit('2')}
+            operation={() => handleConcatenateDigit("2")}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="3"
-            operation={() => handleConcatenateDigit('3')}
+            operation={() => handleConcatenateDigit("3")}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
             label="+"
-            operation={() => activateOperation('addition')}
+            operation={() => activateOperation("addition")}
             highlightButton={additionButtonHighlighted}
             theme={THEMES[selectedTheme].buttonTheme}
           />
@@ -344,7 +344,7 @@ const CalculatorScreen = () => {
           <Button
             label="0"
             doubleSize={true}
-            operation={() => handleConcatenateDigit('0')}
+            operation={() => handleConcatenateDigit("0")}
             theme={THEMES[selectedTheme].buttonTheme}
           />
           <Button
@@ -366,15 +366,15 @@ const CalculatorScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     paddingTop: WINDOW_HEIGHT / 8,
   },
   display: {
-    flexDirection: 'row',
+    flexDirection: "row",
     height: WINDOW_HEIGHT / 4,
   },
   themes: {
-    flexDirection: 'row',
+    flexDirection: "row",
     height: WINDOW_HEIGHT / 15,
     marginBottom: 10,
   },
@@ -382,8 +382,8 @@ const styles = StyleSheet.create({
     height: WINDOW_HEIGHT / 2,
   },
   numPadRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     height: WINDOW_HEIGHT / 2 / 5,
   },
 });
