@@ -224,7 +224,7 @@ const CalculatorScreen = () => {
 
   return showExplosion ? (
     <Image
-      style={{ width: "90%", height: "100%" }}
+      style={{ width: "100%", height: "100%" }}
       source={require("../assets/explosion.gif")}
     />
   ) : (
