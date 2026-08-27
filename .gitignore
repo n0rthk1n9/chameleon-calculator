@@ -13,3 +13,11 @@ ios-build/
 
 # macOS
 .DS_Store
+
+# Xcode / SwiftUI
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcresult
+.swiftpm/
