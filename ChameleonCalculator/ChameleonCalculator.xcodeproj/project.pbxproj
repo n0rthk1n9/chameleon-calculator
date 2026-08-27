@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXFileReference section */
@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		AA0000000000000000000001 /* ChameleonCalculator */ = {isa = PBXFileSystemSynchronizedRootGroup; path = ChameleonCalculator; sourceTree = "<group>"; };
+		AA0000000000000000000001 /* ChameleonCalculator */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ChameleonCalculator; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,7 +91,6 @@
 			);
 			mainGroup = AA0000000000000000000003;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			productRefGroup = AA0000000000000000000004 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
