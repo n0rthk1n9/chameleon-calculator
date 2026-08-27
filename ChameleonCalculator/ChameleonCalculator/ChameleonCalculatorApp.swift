@@ -4,7 +4,7 @@ import SwiftUI
 struct ChameleonCalculatorApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CalculatorView()
         }
     }
 }
