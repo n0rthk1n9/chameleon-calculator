@@ -12,8 +12,9 @@ struct DisplayView: View {
             .foregroundStyle(theme.displayFont)
             .lineLimit(1)
             .minimumScaleFactor(0.25)
+            // The rolling transition is driven explicitly from `equals()`, so
+            // typing swaps instantly and only a computed result animates.
             .contentTransition(.numericText())
-            .animation(.snappy(duration: 0.18), value: text)
             .frame(maxWidth: .infinity, alignment: .trailing)
             .padding(.horizontal, 10)
             .accessibilityLabel("Result")

@@ -8,8 +8,7 @@ struct CalculatorView: View {
     var body: some View {
         let theme = model.theme
         ZStack {
-            theme.backgroundGradient
-                .ignoresSafeArea()
+            ThemeBackground(theme: theme)
 
             VStack(spacing: 18) {
                 DisplayView(text: model.display, theme: theme)
@@ -26,7 +25,13 @@ struct CalculatorView: View {
             .padding(.horizontal, 16)
             .padding(.bottom, 12)
         }
-        .animation(.smooth(duration: 0.3), value: model.selectedThemeID)
+        .overlay {
+            if model.showExplosion {
+                ExplosionView()
+            }
+        }
+        .animation(.easeInOut(duration: 0.25), value: model.showExplosion)
+        .onAppear { Haptics.shared.warmUp() }
     }
 }
 
@@ -36,14 +41,20 @@ struct CalculatorView: View {
 private struct KeypadView: View {
     let model: CalculatorModel
     let theme: Theme
+    @Namespace private var glassNamespace
+
+    /// The locale's decimal separator (e.g. "," in German), used for the key
+    /// label. The engine keeps "." internally for numeric parsing; the display
+    /// already formats with the locale separator via NumberFormatter.
+    private var decimalSeparator: String { Locale.current.decimalSeparator ?? "." }
 
     var body: some View {
         GlassEffectContainer(spacing: 12) {
             Grid(horizontalSpacing: 12, verticalSpacing: 12) {
                 GridRow {
-                    key(model.clearLabel) { model.clear() }
-                    key("+/−") { model.invertSign() }
-                    key("%") { model.percentage() }
+                    key(model.clearLabel, id: "clear", haptic: .clear) { model.clear() }
+                    key("+/−", id: "invert", haptic: .toggle) { model.invertSign() }
+                    key("%", id: "percent", haptic: .toggle) { model.percentage() }
                     operatorKey(.division)
                 }
                 GridRow {
@@ -56,10 +67,10 @@ private struct KeypadView: View {
                     digit("1"); digit("2"); digit("3"); operatorKey(.addition)
                 }
                 GridRow {
-                    key("0") { model.inputDigit("0") }
+                    key("0", id: "d0") { model.inputDigit("0") }
                         .gridCellColumns(2)
-                    key(".") { model.addDot() }
-                    key("=") { model.equals() }
+                    key(decimalSeparator, id: "dot") { model.addDot() }
+                    key("=", id: "equals", haptic: .equals) { model.equals() }
                 }
             }
         }
@@ -67,21 +78,31 @@ private struct KeypadView: View {
     }
 
     private func digit(_ value: String) -> some View {
-        key(value) { model.inputDigit(value) }
+        key(value, id: "d\(value)") { model.inputDigit(value) }
     }
 
     private func operatorKey(_ operation: CalculatorOperation) -> some View {
         CalculatorButton(
             label: operation.symbol,
             theme: theme,
-            isHighlighted: model.isHighlighted(operation)
+            isHighlighted: model.isHighlighted(operation),
+            haptic: .op,
+            glassID: "op-\(operation.rawValue)",
+            glassNamespace: glassNamespace
         ) {
             model.selectOperation(operation)
         }
     }
 
-    private func key(_ label: String, action: @escaping () -> Void) -> some View {
-        CalculatorButton(label: label, theme: theme, action: action)
+    private func key(_ label: String, id: String, haptic: HapticPattern = .digit, action: @escaping () -> Void) -> some View {
+        CalculatorButton(
+            label: label,
+            theme: theme,
+            haptic: haptic,
+            glassID: id,
+            glassNamespace: glassNamespace,
+            action: action
+        )
     }
 }
 
